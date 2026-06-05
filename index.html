@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Вход — АльтВики</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --alt-blue: #0057A8;
+      --alt-blue-dark: #003D7A;
+      --alt-blue-light: #E8F2FF;
+      --alt-accent: #E8341C;
+      --bg: #F4F6F9;
+      --bg-white: #FFFFFF;
+      --sidebar-bg: #1C2A3D;
+      --text-primary: #1A1F2E;
+      --text-secondary: #4A5568;
+      --text-muted: #8090A8;
+      --border: #D8E2EF;
+      --success: #1A8A4A;
+      --header-h: 62px;
+      --font: 'Golos Text', system-ui, sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.7;
+      font-size: 15px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: var(--header-h);
+      background: var(--alt-blue);
+      display: flex; align-items: center;
+      padding: 0 24px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+    }
+
+    .header-logo-zone {
+      display: flex; align-items: center; gap: 12px;
+    }
+
+    .logo-emblem {
+      width: 36px; height: 36px; flex-shrink: 0;
+      background: white; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-emblem svg { width: 24px; height: 24px; }
+
+    .logo-text { color: white; }
+    .logo-text .brand { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; line-height: 1.1; }
+    .logo-text .sub { font-size: 11px; font-weight: 400; opacity: 0.7; letter-spacing: 0.5px; text-transform: uppercase; }
+
+    .main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-top: var(--header-h);
+      padding-bottom: 40px;
+    }
+
+    .login-card {
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.08);
+      width: 100%;
+      max-width: 420px;
+      padding: 40px 40px 36px;
+    }
+
+    .login-icon {
+      width: 52px; height: 52px;
+      background: var(--alt-blue-light, #E8F2FF);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px;
+    }
+    .login-icon i { font-size: 22px; color: var(--alt-blue); }
+
+    .login-title {
+      font-size: 22px; font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    .login-sub {
+      font-size: 13.5px; color: var(--text-muted);
+      margin-bottom: 28px;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+    .field label {
+      display: block;
+      font-size: 13px; font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+      letter-spacing: 0.1px;
+    }
+    .field-wrap {
+      position: relative;
+      display: flex; align-items: center;
+    }
+    .field-wrap i {
+      position: absolute; left: 13px;
+      color: var(--text-muted); font-size: 14px;
+      pointer-events: none;
+    }
+    .field-wrap input {
+      width: 100%;
+      padding: 9px 14px 9px 38px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-family: var(--font);
+      font-size: 14.5px;
+      color: var(--text-primary);
+      background: var(--bg);
+      outline: none;
+      transition: border-color 0.18s, box-shadow 0.18s;
+    }
+    .field-wrap input:focus {
+      border-color: var(--alt-blue);
+      box-shadow: 0 0 0 3px rgba(0,87,168,0.1);
+      background: white;
+    }
+    .field-wrap .toggle-pass {
+      position: absolute; right: 12px;
+      background: none; border: none;
+      color: var(--text-muted); font-size: 14px;
+      cursor: pointer; padding: 4px;
+      pointer-events: all;
+    }
+    .field-wrap .toggle-pass:hover { color: var(--alt-blue); }
+
+    .error-msg {
+      display: none;
+      background: #FFF0ED;
+      border: 1px solid #F5C0B3;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13.5px;
+      color: #B83020;
+      margin-bottom: 16px;
+      align-items: center;
+      gap: 8px;
+    }
+    .error-msg.show { display: flex; }
+    .error-msg i { font-size: 15px; flex-shrink: 0; }
+
+    .btn-login {
+      width: 100%;
+      padding: 11px;
+      background: var(--alt-blue);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-family: var(--font);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.18s, transform 0.1s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      margin-top: 4px;
+    }
+    .btn-login:hover { background: var(--alt-blue-dark, #003D7A); }
+    .btn-login:active { transform: scale(0.99); }
+    .btn-login.loading { opacity: 0.7; pointer-events: none; }
+
+    .login-footer {
+      margin-top: 24px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+      font-size: 12.5px;
+      color: var(--text-muted);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-logo-zone">
+    <div class="logo-emblem">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2L3 7v10l9 5 9-5V7L12 2z" fill="#0057A8"/>
+        <path d="M12 2v20M3 7l9 5 9-5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="logo-text">
+      <div class="brand">АльтВики</div>
+      <div class="sub">Документация</div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+  <div class="login-card">
+    <div class="login-icon"><i class="fas fa-user-shield"></i></div>
+    <div class="login-title">Вход в систему</div>
+    <div class="login-sub">Введите свои учётные данные для доступа</div>
+
+    <div class="error-msg" id="error-msg">
+      <i class="fas fa-exclamation-circle"></i>
+      <span id="error-text">Неверный логин или пароль</span>
+    </div>
+
+    <div class="field">
+      <label for="login-input">Логин</label>
+      <div class="field-wrap">
+        <i class="fas fa-user"></i>
+        <input type="text" id="login-input" placeholder="Введите логин" autocomplete="username">
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="pass-input">Пароль</label>
+      <div class="field-wrap">
+        <i class="fas fa-lock"></i>
+        <input type="password" id="pass-input" placeholder="Введите пароль" autocomplete="current-password">
+        <button class="toggle-pass" type="button" onclick="togglePass()" title="Показать пароль">
+          <i class="fas fa-eye" id="pass-eye"></i>
+        </button>
+      </div>
+    </div>
+
+    <button class="btn-login" id="btn-login" onclick="doLogin()">
+      <i class="fas fa-sign-in-alt"></i> Войти
+    </button>
+
+    <div class="login-footer">
+      АльтВики — внутренняя документация
+    </div>
+  </div>
+</main>
+
+<script>
+  const CREDS = { login: 'maxos', password: 'soso' };
+  const REDIRECT = 'index.html';
+
+  function togglePass() {
+    const inp = document.getElementById('pass-input');
+    const eye = document.getElementById('pass-eye');
+    if (inp.type === 'password') {
+      inp.type = 'text';
+      eye.className = 'fas fa-eye-slash';
+    } else {
+      inp.type = 'password';
+      eye.className = 'fas fa-eye';
+    }
+  }
+
+  function doLogin() {
+    const login = document.getElementById('login-input').value.trim();
+    const pass = document.getElementById('pass-input').value;
+    const err = document.getElementById('error-msg');
+    const btn = document.getElementById('btn-login');
+
+    err.classList.remove('show');
+
+    if (!login || !pass) {
+      document.getElementById('error-text').textContent = 'Заполните все поля';
+      err.classList.add('show');
+      return;
+    }
+
+    if (login === CREDS.login && pass === CREDS.password) {
+      btn.classList.add('loading');
+      btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Вход...';
+      setTimeout(() => { window.location.href = REDIRECT; }, 600);
+    } else {
+      document.getElementById('error-text').textContent = 'Неверный логин или пароль';
+      err.classList.add('show');
+      document.getElementById('pass-input').value = '';
+    }
+  }
+
+  // Enter для сабмита
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter') doLogin();
+  });
+</script>
+</body>
+</html>

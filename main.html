@@ -1,0 +1,1777 @@
+<html lang="ru"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>АльтВики — документация по ALT Linux 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --alt-blue: #0057A8;
+      --alt-blue-dark: #003D7A;
+      --alt-blue-light: #E8F2FF;
+      --alt-blue-mid: #1A73C8;
+      --alt-accent: #E8341C;
+      --alt-accent-soft: #FFF0ED;
+      --bg: #F4F6F9;
+      --bg-white: #FFFFFF;
+      --sidebar-bg: #1C2A3D;
+      --sidebar-text: #C8D8EC;
+      --sidebar-hover: #243348;
+      --sidebar-active: #0057A8;
+      --sidebar-active-bg: rgba(0,87,168,0.18);
+      --text-primary: #1A1F2E;
+      --text-secondary: #4A5568;
+      --text-muted: #8090A8;
+      --border: #D8E2EF;
+      --code-bg: #1E2D42;
+      --code-text: #B8D4F0;
+      --success: #1A8A4A;
+      --warning: #D97706;
+      --note-bg: #EBF4FF;
+      --note-border: #0057A8;
+      --warn-bg: #FFFBEB;
+      --warn-border: #D97706;
+      --header-h: 62px;
+      --sidebar-w: 280px;
+      --font: 'Golos Text', system-ui, sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.7;
+      font-size: 15px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: var(--header-h);
+      background: var(--alt-blue);
+      display: flex; align-items: center;
+      padding: 0 24px 0 0;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+    }
+
+    .header-logo-zone {
+      width: var(--sidebar-w);
+      display: flex; align-items: center; gap: 12px;
+      padding: 0 20px;
+      flex-shrink: 0;
+      border-right: 1px solid rgba(255,255,255,0.12);
+      height: 100%;
+    }
+
+    .logo-emblem {
+      width: 36px; height: 36px; flex-shrink: 0;
+      background: white; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-emblem svg { width: 24px; height: 24px; }
+
+    .logo-text { color: white; }
+    .logo-text .brand { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; line-height: 1.1; }
+    .logo-text .sub { font-size: 11px; font-weight: 400; opacity: 0.7; letter-spacing: 0.5px; text-transform: uppercase; }
+
+    .header-center {
+      flex: 1; display: flex; align-items: center;
+      padding: 0 20px;
+    }
+
+    .search-bar {
+      width: 100%; max-width: 480px;
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 8px;
+      padding: 6px 14px;
+      transition: background 0.2s;
+    }
+    .search-bar:focus-within { background: rgba(255,255,255,0.22); border-color: rgba(255,255,255,0.4); }
+    .search-bar i { color: rgba(255,255,255,0.7); font-size: 14px; }
+    .search-bar input {
+      background: none; border: none; outline: none;
+      color: white; font-family: var(--font); font-size: 14px; width: 100%;
+    }
+    .search-bar input::placeholder { color: rgba(255,255,255,0.5); }
+
+    .header-actions { display: flex; align-items: center; gap: 8px; }
+    .header-pill {
+      display: flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: white; font-size: 13px; font-weight: 500;
+      padding: 6px 14px; border-radius: 6px;
+      cursor: pointer; transition: background 0.2s;
+      font-family: var(--font);
+    }
+    .header-pill:hover { background: rgba(255,255,255,0.22); }
+    .header-pill.accent { background: var(--alt-accent); border-color: var(--alt-accent); }
+    .header-pill.accent:hover { background: #c42b15; }
+
+    .layout {
+      display: flex;
+      padding-top: var(--header-h);
+      flex: 1; /* Чтобы тянулось вниз */
+    }
+
+    aside {
+      position: fixed;
+      top: var(--header-h); left: 0; bottom: 0;
+      width: var(--sidebar-w);
+      background: var(--sidebar-bg);
+      overflow-y: auto;
+      overflow-x: hidden;
+      z-index: 50;
+      display: flex; flex-direction: column;
+    }
+
+    aside::-webkit-scrollbar { width: 4px; }
+    aside::-webkit-scrollbar-track { background: transparent; }
+    aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+
+    .sidebar-section-label {
+      font-size: 10px; font-weight: 600; letter-spacing: 1.2px;
+      text-transform: uppercase; color: rgba(200,216,236,0.4);
+      padding: 20px 20px 6px;
+    }
+
+    .nav-item {
+      position: relative;
+    }
+
+    .nav-item-header {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 20px;
+      cursor: pointer;
+      color: var(--sidebar-text);
+      font-size: 13.5px; font-weight: 500;
+      border-radius: 0;
+      transition: background 0.15s, color 0.15s;
+      user-select: none;
+    }
+    .nav-item-header:hover { background: var(--sidebar-hover); color: white; }
+    .nav-item-header.active { background: var(--sidebar-active-bg); color: white; }
+    .nav-item-header i.nav-icon { font-size: 14px; width: 18px; text-align: center; flex-shrink: 0; opacity: 0.8; }
+    .nav-item-header .nav-label { flex: 1; }
+    .nav-item-header .nav-arrow { font-size: 11px; opacity: 0.5; transition: transform 0.2s; }
+    .nav-item-header.open .nav-arrow { transform: rotate(90deg); }
+
+    .nav-subitems {
+      display: none;
+      background: rgba(0,0,0,0.15);
+    }
+    .nav-subitems.open { display: block; }
+
+    .nav-subitem {
+      display: flex; align-items: center; gap: 8px;
+      padding: 7px 20px 7px 40px;
+      color: rgba(200,216,236,0.75);
+      font-size: 13px; cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+    .nav-subitem:hover { background: var(--sidebar-hover); color: white; }
+    .nav-subitem.active-sub { color: #7AB8FF; background: rgba(0,87,168,0.12); }
+    .nav-subitem::before {
+      content: ''; width: 4px; height: 4px; border-radius: 50%;
+      background: currentColor; opacity: 0.5; flex-shrink: 0;
+    }
+
+    .sidebar-footer {
+      margin-top: auto; padding: 16px 20px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      font-size: 12px; color: rgba(200,216,236,0.35);
+      line-height: 1.5;
+    }
+
+    main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: calc(100vh - var(--header-h));
+    }
+
+    .content-area {
+      max-width: 860px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 40px 48px 80px;
+      flex: 1; /* Заставляет контент занимать все место, толкая футер вниз */
+    }
+
+    .breadcrumb {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 13px; color: var(--text-muted);
+      margin-bottom: 28px;
+    }
+    .breadcrumb span { cursor: pointer; }
+    .breadcrumb span:hover { color: var(--alt-blue); }
+    .breadcrumb .sep { opacity: 0.4; }
+    .breadcrumb .current { color: var(--text-secondary); font-weight: 500; }
+
+    .article-header { margin-bottom: 36px; }
+    .article-category {
+      display: inline-block;
+      background: var(--alt-blue-light);
+      color: var(--alt-blue);
+      font-size: 11px; font-weight: 600; letter-spacing: 0.8px;
+      text-transform: uppercase; padding: 3px 10px;
+      border-radius: 4px; margin-bottom: 12px;
+    }
+    .article-title {
+      font-size: 30px; font-weight: 700;
+      color: var(--text-primary); line-height: 1.25;
+      margin-bottom: 12px; letter-spacing: -0.5px;
+    }
+    .article-meta {
+      display: flex; align-items: center; gap: 16px;
+      font-size: 13px; color: var(--text-muted);
+    }
+    .article-meta i { font-size: 12px; }
+    .article-meta span { display: flex; align-items: center; gap: 5px; }
+    .article-desc {
+      margin-top: 14px;
+      font-size: 16px; color: var(--text-secondary);
+      line-height: 1.65; padding: 14px 18px;
+      background: var(--alt-blue-light);
+      border-left: 3px solid var(--alt-blue);
+      border-radius: 0 6px 6px 0;
+    }
+
+    .article-body h2 {
+      font-size: 20px; font-weight: 700;
+      color: var(--text-primary);
+      margin: 36px 0 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+      letter-spacing: -0.3px;
+    }
+    .article-body h3 {
+      font-size: 16px; font-weight: 600;
+      color: var(--text-primary);
+      margin: 24px 0 10px;
+    }
+    .article-body p { margin-bottom: 14px; color: var(--text-secondary); line-height: 1.75; }
+    .article-body ul, .article-body ol {
+      margin: 0 0 16px 20px; color: var(--text-secondary);
+    }
+    .article-body li { margin-bottom: 6px; line-height: 1.65; }
+    .article-body .de-doc .de-src { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; }
+    .article-body .de-pre {
+      white-space: pre-wrap; word-break: break-word;
+      font-family: var(--mono); font-size: 12.5px; line-height: 1.62;
+      background: var(--code-bg); color: var(--code-text);
+      padding: 16px 18px; border-radius: 8px; border: 1px solid var(--border);
+    }
+    .article-body .practice-doc { margin-top: 2px; }
+    .article-body .practice-doc .narrative-pre {
+      white-space: pre-wrap; word-break: break-word;
+      font-family: var(--font);
+      font-size: 15px;
+      line-height: 1.72;
+      background: #F8FAFC;
+      color: var(--text-secondary);
+      padding: 16px 18px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin: 0 0 14px;
+    }
+    .article-body .practice-doc .cmd-pre {
+      white-space: pre-wrap; word-break: break-word;
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.65;
+      background: #EEF2FA;
+      color: #0F172A;
+      padding: 14px 16px;
+      border-radius: 8px;
+      border: 1px solid #C8D4E8;
+      margin: 0 0 16px;
+    }
+    .article-body .practice-doc .cmd-pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+      font-size: inherit;
+      border-radius: 0;
+    }
+
+    .code-block {
+      margin: 20px 0;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.12);
+    }
+    .code-header {
+      display: flex; align-items: center; justify-content: space-between;
+      background: #141F2E; padding: 10px 16px;
+    }
+    .code-lang {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.8px;
+      text-transform: uppercase; color: #5A8FCB;
+    }
+    .code-copy {
+      font-size: 12px; color: rgba(255,255,255,0.4); cursor: pointer;
+      background: none; border: none; font-family: var(--font);
+      transition: color 0.2s; display: flex; align-items: center; gap: 5px;
+    }
+    .code-copy:hover { color: rgba(255,255,255,0.8); }
+    pre {
+      background: var(--code-bg);
+      color: var(--code-text);
+      padding: 18px 20px;
+      font-family: var(--mono);
+      font-size: 13px; line-height: 1.7;
+      overflow-x: auto;
+      margin: 0;
+    }
+    pre .cmd { color: #7AB8FF; }
+    pre .comment { color: #546E8A; font-style: italic; }
+    pre .str { color: #B5DB82; }
+    pre .kw { color: #C0A8E8; }
+    pre .num { color: #F0A060; }
+
+    code {
+      background: #ECF2FB;
+      color: var(--alt-blue-dark);
+      font-family: var(--mono);
+      font-size: 13px; padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .note {
+      display: flex; gap: 12px;
+      padding: 14px 16px;
+      border-radius: 8px;
+      margin: 20px 0;
+      font-size: 14px; line-height: 1.65;
+    }
+    .note.info { background: var(--note-bg); border-left: 3px solid var(--note-border); color: #1A3A6E; }
+    .note.warn { background: var(--warn-bg); border-left: 3px solid var(--warn-border); color: #5C3D00; }
+    .note.tip { background: #EDFBF3; border-left: 3px solid #1A8A4A; color: #0D4A28; }
+    .note i { font-size: 15px; flex-shrink: 0; margin-top: 2px; }
+    .note.info i { color: var(--alt-blue); }
+    .note.warn i { color: var(--warning); }
+    .note.tip i { color: var(--success); }
+
+    .steps { margin: 20px 0; }
+    .step {
+      display: flex; gap: 16px; margin-bottom: 20px;
+      align-items: flex-start;
+    }
+    .step-num {
+      width: 28px; height: 28px; flex-shrink: 0;
+      background: var(--alt-blue); color: white;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700;
+    }
+    .step-body { flex: 1; padding-top: 3px; }
+    .step-body strong { display: block; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+    .step-body p { margin: 0; font-size: 14px; color: var(--text-secondary); }
+
+    .tags { display: flex; gap: 8px; flex-wrap: wrap; margin: 24px 0 0; }
+    .tag {
+      font-size: 12px; padding: 4px 10px;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 4px; color: var(--text-muted);
+      cursor: pointer; transition: all 0.15s;
+    }
+    .tag:hover { border-color: var(--alt-blue); color: var(--alt-blue); background: var(--alt-blue-light); }
+
+    .welcome-hero {
+      background: linear-gradient(135deg, var(--alt-blue) 0%, var(--alt-blue-dark) 100%);
+      border-radius: 14px; padding: 44px 48px;
+      color: white; margin-bottom: 36px;
+      position: relative; overflow: hidden;
+    }
+    .welcome-hero::before {
+      content: '';
+      position: absolute; top: -40px; right: -40px;
+      width: 220px; height: 220px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 50%;
+    }
+    .welcome-hero::after {
+      content: '';
+      position: absolute; bottom: -60px; right: 60px;
+      width: 150px; height: 150px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 50%;
+    }
+    .welcome-hero h1 { font-size: 28px; font-weight: 700; margin-bottom: 10px; }
+    .welcome-hero p { font-size: 15px; opacity: 0.8; max-width: 500px; line-height: 1.65; }
+    .hero-stats { display: flex; gap: 28px; margin-top: 28px; }
+    .hero-stat .num { font-size: 26px; font-weight: 700; }
+    .hero-stat .lbl { font-size: 12px; opacity: 0.65; margin-top: 2px; }
+
+    .cards-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px; margin-bottom: 36px;
+    }
+    .card {
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      cursor: pointer;
+      transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+    }
+    .card:hover { box-shadow: 0 4px 20px rgba(0,87,168,0.1); border-color: var(--alt-blue); transform: translateY(-2px); }
+    .card-icon {
+      width: 40px; height: 40px; border-radius: 8px;
+      background: var(--alt-blue-light); display: flex; align-items: center; justify-content: center;
+      margin-bottom: 12px; font-size: 18px; color: var(--alt-blue);
+    }
+    .card h3 { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+    .card p { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+    .card .card-count { font-size: 11px; color: var(--alt-blue); font-weight: 600; margin-top: 8px; }
+
+    footer {
+      background: var(--sidebar-bg);
+      color: rgba(200,216,236,0.5);
+      text-align: center;
+      padding: 24px 20px;
+      font-size: 13px;
+      display: flex; align-items: center; justify-content: center; gap: 20px;
+      width: 100%;
+    }
+    footer a { color: inherit; text-decoration: none; }
+    footer a:hover { color: rgba(200,216,236,0.9); }
+
+    .edit-mode-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: rgba(200,216,236,0.7);
+      padding: 7px 16px; border-radius: 6px;
+      font-family: var(--font); font-size: 13px; font-weight: 500;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .edit-mode-btn:hover { background: rgba(0,87,168,0.35); border-color: var(--alt-blue); color: white; }
+    .edit-mode-btn.active-edit { background: #B52D1A; border-color: #E8341C; color: white; }
+
+    .editor-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(14,22,36,0.65);
+      backdrop-filter: blur(4px);
+    }
+    .editor-overlay.visible { display: flex; }
+
+    .editor-panel {
+      position: fixed;
+      top: 0; right: 0; bottom: 0;
+      width: 620px;
+      background: #0F1B2D;
+      border-left: 1px solid rgba(255,255,255,0.08);
+      display: flex; flex-direction: column;
+      box-shadow: -8px 0 40px rgba(0,0,0,0.4);
+      z-index: 201;
+      transform: translateX(100%);
+      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    .editor-panel.open { transform: translateX(0); }
+
+    .editor-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      background: #0A1422;
+    }
+    .editor-header h2 { font-size: 15px; font-weight: 600; color: white; }
+    .editor-header .close-btn {
+      width: 30px; height: 30px; border-radius: 6px;
+      background: rgba(255,255,255,0.06); border: none;
+      color: rgba(255,255,255,0.5); cursor: pointer; font-size: 14px;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+    }
+    .editor-header .close-btn:hover { background: rgba(255,255,255,0.12); color: white; }
+
+    .editor-tabs {
+      display: flex; gap: 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .editor-tab {
+      padding: 11px 18px; font-size: 13px; font-weight: 500;
+      color: rgba(200,216,236,0.5); cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.15s; font-family: var(--font);
+      background: none; border-top: none; border-left: none; border-right: none;
+    }
+    .editor-tab:hover { color: rgba(200,216,236,0.85); }
+    .editor-tab.active { color: #7AB8FF; border-bottom-color: #7AB8FF; }
+
+    .editor-body { flex: 1; overflow-y: auto; padding: 20px; }
+    .editor-body::-webkit-scrollbar { width: 4px; }
+    .editor-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+
+    .form-group { margin-bottom: 18px; }
+    .form-label {
+      display: block; font-size: 12px; font-weight: 600;
+      letter-spacing: 0.5px; color: rgba(200,216,236,0.55);
+      text-transform: uppercase; margin-bottom: 7px;
+    }
+    .form-input, .form-textarea, .form-select {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 7px;
+      color: rgba(200,216,236,0.9);
+      font-family: var(--font); font-size: 14px;
+      padding: 10px 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-input:focus, .form-textarea:focus, .form-select:focus {
+      border-color: #3A7BD5;
+      background: rgba(58,123,213,0.08);
+    }
+    .form-textarea { min-height: 180px; resize: vertical; font-family: var(--mono); font-size: 13px; line-height: 1.65; }
+    .form-select option { background: #1A2B42; }
+
+    .body-edit-mode-tabs {
+      display: flex; gap: 6px; margin-top: 14px; margin-bottom: 10px;
+    }
+    .body-edit-mode-tab {
+      padding: 7px 14px; font-size: 12px; font-weight: 600;
+      color: rgba(200,216,236,0.5); cursor: pointer;
+      border-radius: 6px; border: 1px solid transparent;
+      background: rgba(255,255,255,0.04); font-family: var(--font);
+    }
+    .body-edit-mode-tab:hover { color: rgba(200,216,236,0.85); }
+    .body-edit-mode-tab.active {
+      color: #7AB8FF; border-color: rgba(122,184,255,0.35);
+      background: rgba(58,123,213,0.15);
+    }
+    .rich-toolbar {
+      display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px;
+      padding: 8px; background: rgba(0,0,0,0.2);
+      border-radius: 7px; border: 1px solid rgba(255,255,255,0.08);
+    }
+    .rich-toolbar button {
+      min-width: 32px; height: 32px; padding: 0 10px;
+      border-radius: 5px; border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.06); color: rgba(200,216,236,0.85);
+      cursor: pointer; font-size: 12px; font-family: var(--font);
+      transition: all 0.15s;
+    }
+    .rich-toolbar button:hover { background: rgba(58,123,213,0.25); border-color: rgba(122,184,255,0.3); color: white; }
+    .rich-toolbar button.is-active {
+      background: rgba(58,123,213,0.5); border-color: rgba(122,184,255,0.55); color: #fff;
+      box-shadow: inset 0 0 0 1px rgba(122,184,255,0.25);
+    }
+    .rich-toolbar .rich-sep {
+      width: 1px; height: 22px; align-self: center; flex-shrink: 0;
+      background: rgba(255,255,255,0.12); margin: 0 2px 0 6px;
+    }
+    .rich-editor {
+      min-height: 240px; max-height: 50vh; overflow-y: auto;
+      padding: 14px 16px; border-radius: 7px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.05);
+      color: rgba(200,216,236,0.92); font-size: 14px; line-height: 1.65;
+      outline: none; font-family: var(--font);
+    }
+    .rich-editor:focus { border-color: #3A7BD5; background: rgba(58,123,213,0.08); }
+    .rich-editor:empty:before {
+      content: attr(data-placeholder);
+      color: rgba(200,216,236,0.32);
+      pointer-events: none;
+    }
+    .rich-editor img { max-width: 100%; height: auto; border-radius: 4px; }
+    .rich-editor h2 { font-size: 1.25em; margin: 0.6em 0 0.35em; color: #fff; }
+    .rich-editor p { margin: 0 0 0.65em; }
+    .rich-editor ul { margin: 0.4em 0 0.6em 1.2em; padding: 0; }
+    .rich-editor pre {
+      font-family: var(--mono); font-size: 12.5px; line-height: 1.55;
+      background: rgba(0,0,0,0.38); color: #C8E6FF; padding: 12px 14px;
+      border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); overflow-x: auto;
+    }
+    .rich-editor code {
+      font-family: var(--mono); font-size: 12.5px;
+      background: rgba(0,0,0,0.35); color: #9FD8FF; padding: 2px 6px; border-radius: 4px;
+    }
+    .rich-editor blockquote {
+      margin: 0.55em 0; padding: 8px 14px 8px 14px;
+      border-left: 4px solid rgba(122,184,255,0.55); background: rgba(58,123,213,0.14);
+      color: rgba(210,224,240,0.92);
+    }
+    #edit-body-html-wrap { display: none; }
+    #edit-body-html-wrap.visible { display: block; }
+    #edit-body-visual-wrap { display: block; }
+    #edit-body-visual-wrap.hidden { display: none; }
+
+    .editor-actions {
+      padding: 16px 20px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: flex; gap: 10px; background: #0A1422;
+    }
+    .btn-primary {
+      flex: 1; background: var(--alt-blue); color: white;
+      border: none; border-radius: 7px;
+      padding: 10px 20px; font-family: var(--font); font-size: 14px; font-weight: 600;
+      cursor: pointer; transition: background 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-primary:hover { background: var(--alt-blue-mid); }
+    .btn-secondary {
+      background: rgba(255,255,255,0.06); color: rgba(200,216,236,0.75);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 7px;
+      padding: 10px 16px; font-family: var(--font); font-size: 14px;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.1); color: white; }
+    .btn-danger {
+      background: rgba(232,52,28,0.1); color: #F87A6A;
+      border: 1px solid rgba(232,52,28,0.25); border-radius: 7px;
+      padding: 10px 16px; font-family: var(--font); font-size: 14px;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .btn-danger:hover { background: rgba(232,52,28,0.2); color: #FF9A8A; }
+
+    .topic-list { display: flex; flex-direction: column; gap: 8px; }
+    .topic-item {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 8px; padding: 10px 14px;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .topic-item:hover { background: rgba(58,123,213,0.12); border-color: rgba(58,123,213,0.3); }
+    .topic-item .ti-label { flex: 1; font-size: 13.5px; color: rgba(200,216,236,0.85); }
+    .topic-item .ti-cat { font-size: 11px; color: rgba(200,216,236,0.35); }
+    .topic-item-actions { display: flex; gap: 6px; }
+    .ti-btn {
+      width: 26px; height: 26px; border-radius: 5px;
+      background: transparent; border: none;
+      color: rgba(200,216,236,0.4); cursor: pointer;
+      font-size: 12px; display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+    }
+    .ti-btn.edit:hover { background: rgba(58,123,213,0.2); color: #7AB8FF; }
+    .ti-btn.del:hover { background: rgba(232,52,28,0.2); color: #F87A6A; }
+    .ti-btn.sort:hover { background: rgba(255,255,255,0.1); color: white; }
+
+    body.edit-active .article-title,
+    body.edit-active .article-desc,
+    body.edit-active .article-body {
+      outline: 2px dashed rgba(0,87,168,0.3);
+      outline-offset: 3px;
+      border-radius: 4px;
+      cursor: text;
+    }
+    body.edit-active .article-title:focus,
+    body.edit-active .article-desc:focus,
+    body.edit-active .article-body:focus {
+      outline: 2px solid var(--alt-blue);
+      background: var(--alt-blue-light);
+    }
+
+    .edit-hint {
+      display: none;
+      background: #1A3A6E; color: #7AB8FF;
+      font-size: 12px; padding: 8px 16px;
+      text-align: center; border-bottom: 1px solid rgba(0,87,168,0.3);
+    }
+    body.edit-active .edit-hint { display: block; }
+
+    .toast {
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: #1C3A1E; color: #6FCF82;
+      border: 1px solid rgba(111,207,130,0.3);
+      border-radius: 8px; padding: 12px 20px;
+      font-size: 13.5px; font-weight: 500;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      z-index: 9999; opacity: 0;
+      transition: all 0.3s;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    .inline-edit-bar {
+      display: none;
+      position: fixed; top: calc(var(--header-h) + 8px); left: 50%; transform: translateX(-50%);
+      background: #1A3A6E; border: 1px solid rgba(0,87,168,0.4);
+      border-radius: 8px; padding: 8px 16px;
+      z-index: 150; gap: 10px; align-items: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+      font-size: 13px; color: #B8D4F8;
+      white-space: nowrap;
+    }
+    body.edit-active .inline-edit-bar { display: flex; }
+  </style>
+</head>
+<body class="">
+
+<div class="edit-hint">
+  <i class="fas fa-pen" style="margin-right:6px"></i>
+  Режим редактора активен — кликните по заголовку, описанию или области статьи и правьте текст прямо на странице
+</div>
+
+<div class="inline-edit-bar">
+  <i class="fas fa-edit"></i>
+  <span>Кликните по любому тексту для редактирования</span>
+  <button type="button" onclick="openEditorPanel()" style="margin-left:8px; background:rgba(255,255,255,0.12); color:#E8F0FF; border:1px solid rgba(122,184,255,0.35); border-radius:5px; padding:5px 12px; font-family:var(--font); font-size:12px; cursor:pointer; font-weight:600;">
+    <i class="fas fa-columns" style="margin-right:5px"></i>Панель
+  </button>
+  <button onclick="saveInlineEdits()" style="margin-left:8px; background:#0057A8; color:white; border:none; border-radius:5px; padding:5px 12px; font-family:var(--font); font-size:12px; cursor:pointer; font-weight:600;">
+    <i class="fas fa-save" style="margin-right:5px"></i>Сохранить
+  </button>
+</div>
+
+<header>
+  <div class="header-logo-zone">
+    <div class="logo-emblem">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M12 2L3 7v10l9 5 9-5V7z" fill="#0057A8" stroke="#0057A8" stroke-width="1"></path>
+        <path d="M12 2L3 7l9 5 9-5z" fill="#003D7A"></path>
+        <path d="M12 7l9-5" stroke="white" stroke-width="0.5" opacity="0.3"></path>
+        <circle cx="12" cy="12" r="3" fill="white" opacity="0.9"></circle>
+      </svg>
+    </div>
+    <div class="logo-text">
+      <div class="brand">АльтВики</div>
+      <div class="sub">ALT Linux · Docs</div>
+    </div>
+  </div>
+  <div class="header-center">
+    <div class="search-bar">
+      <i class="fas fa-search"></i>
+      <input type="text" id="docs-search" placeholder="Поиск по документации..." oninput="handleSearch(this.value)">
+    </div>
+  </div>
+  <div class="header-actions">
+    <button class="header-pill" onclick="showSection('home')">
+      <i class="fas fa-home"></i> Главная
+    </button>
+  </div>
+</header>
+
+<div class="layout">
+  <aside id="sidebar">
+    <div class="sidebar-section-label">Навигация</div>
+    <div class="nav-item">
+      <div class="nav-item-header active" onclick="showSection('home'); setActive(this)">
+        <i class="fas fa-home nav-icon"></i>
+        <span class="nav-label">Главная страница</span>
+      </div>
+    </div>
+    <div class="sidebar-section-label" style="margin-top:8px">Разделы</div>
+    <div id="nav-tree"><div class="nav-item">
+      <div class="nav-item-header" onclick="toggleNav(this)" data-cat="network">
+        <i class="fas fa-network-wired nav-icon"></i>
+        <span class="nav-label">Сеть</span>
+        <i class="fas fa-chevron-right nav-arrow"></i>
+      </div>
+      <div class="nav-subitems">
+        
+          <div class="nav-subitem " onclick="openArticle('samba', this)">
+            Samba: настройка файлового сервера
+          </div>
+      </div>
+    </div><div class="nav-item">
+      <div class="nav-item-header" onclick="toggleNav(this)" data-cat="software">
+        <i class="fas fa-box-open nav-icon"></i>
+        <span class="nav-label">Программы</span>
+        <i class="fas fa-chevron-right nav-arrow"></i>
+      </div>
+      <div class="nav-subitems">
+        
+          <div class="nav-subitem " onclick="openArticle('apt', this)">
+            APT: управление пакетами
+          </div>
+      </div>
+    </div></div>
+    <div class="sidebar-footer">
+      АльтВики — документация по ALT Linux<br>
+      Актуально для ALT 10 / p11 (2026)
+    </div>
+  </aside>
+
+  <main>
+    <div class="content-area" id="content-area">
+      <div class="welcome-hero">
+        <h1>Документация по ALT Linux 2026</h1>
+        <p>Полное собрание руководств, инструкций и справочных материалов.</p>
+        <div class="hero-stats">
+          <div class="hero-stat"><div class="num">2</div><div class="lbl">Статей</div></div>
+          <div class="hero-stat"><div class="num">7</div><div class="lbl">Разделов</div></div>
+          <div class="hero-stat"><div class="num">ALT 10</div><div class="lbl">Платформа</div></div>
+        </div>
+      </div>
+      <h2 style="font-size:16px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px">Разделы</h2>
+      <div class="cards-grid"><div class="card" onclick="openFirstInCat('network')">
+        <div class="card-icon"><i class="fas fa-network-wired"></i></div>
+        <h3>Сеть</h3>
+        <p>Статьи и руководства по теме</p>
+        <div class="card-count">1 статья</div>
+      </div><div class="card" onclick="openFirstInCat('software')">
+        <div class="card-icon"><i class="fas fa-box-open"></i></div>
+        <h3>Программы</h3>
+        <p>Статьи и руководства по теме</p>
+        <div class="card-count">1 статья</div>
+      </div><div class="card" onclick="openFirstInCat('system')">
+        <div class="card-icon"><i class="fas fa-cog"></i></div>
+        <h3>Система</h3>
+        <p>Статьи и руководства по теме</p>
+        <div class="card-count">0 статей</div>
+      </div><div class="card" onclick="openFirstInCat('security')">
+        <div class="card-icon"><i class="fas fa-shield-alt"></i></div>
+        <h3>Безопасность</h3>
+        <p>Статьи и руководства по теме</p>
+        <div class="card-count">0 статей</div>
+      </div><div class="card" onclick="openFirstInCat('server')">
+        <div class="card-icon"><i class="fas fa-server"></i></div>
+        <h3>Серверы</h3>
+        <p>Статьи и руководства по теме</p>
+        <div class="card-count">0 статей</div>
+      </div><div class="card" onclick="openFirstInCat('desktop')">
+        <div class="card-icon"><i class="fas fa-desktop"></i></div>
+        <h3>Рабочий стол</h3>
+        <p>Статьи и руководства по теме</p>
+        <div class="card-count">0 статей</div>
+      </div><div class="card" onclick="openFirstInCat('exam')">
+        <div class="card-icon"><i class="fas fa-graduation-cap"></i></div>
+        <h3>Сетевой практикум</h3>
+        <p>Статьи и руководства по теме</p>
+        <div class="card-count">0 статей</div>
+      </div></div>
+    </div>
+    <footer>
+      <span>© 2026 АльтВики</span>
+      <span>·</span>
+      <a href="#">О проекте</a>
+      <span>·</span>
+      <a href="#">Исходный код</a>
+      <span>·</span>
+      <button class="edit-mode-btn" id="editModeBtn" onclick="toggleEditMode()">
+        <i class="fas fa-tools"></i>
+        <span id="editModeLabel">Режим редактора</span>
+      </button>
+    </footer>
+  </main>
+</div>
+
+<div class="editor-overlay" id="editorOverlay" onclick="handleOverlayClick(event)"></div>
+
+<div class="editor-panel" id="editorPanel">
+  <div class="editor-header">
+    <h2 id="editor-panel-title"><i class="fas fa-edit" style="margin-right:8px;color:#7AB8FF"></i>Панель редактора</h2>
+    <button type="button" class="close-btn" onclick="hideEditorPanel()" title="Скрыть панель (режим редактора остаётся)"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="editor-tabs">
+    <button class="editor-tab active" onclick="switchTab('topics', this)">Все статьи</button>
+    <button class="editor-tab" onclick="switchTab('edit-article', this)">Редактировать</button>
+    <button class="editor-tab" onclick="switchTab('new-article', this)">Новая статья</button>
+    <button class="editor-tab" onclick="switchTab('structure', this)">Структура</button>
+  </div>
+  <div class="editor-body" id="editor-body"><div class="topic-list"><div class="topic-item">
+      <div class="ti-label">Samba: настройка файлового сервера</div>
+      <div class="topic-item-actions">
+        <button class="ti-btn sort" onclick="moveItem('articles', 0, -1)"><i class="fas fa-arrow-up"></i></button>
+        <button class="ti-btn sort" onclick="moveItem('articles', 0, 1)"><i class="fas fa-arrow-down"></i></button>
+        <button class="ti-btn edit" onclick="startEditArticle('samba')"><i class="fas fa-pen"></i></button>
+        <button class="ti-btn del" onclick="deleteArticle('samba')"><i class="fas fa-trash"></i></button>
+      </div>
+    </div><div class="topic-item">
+      <div class="ti-label">APT: управление пакетами</div>
+      <div class="topic-item-actions">
+        <button class="ti-btn sort" onclick="moveItem('articles', 1, -1)"><i class="fas fa-arrow-up"></i></button>
+        <button class="ti-btn sort" onclick="moveItem('articles', 1, 1)"><i class="fas fa-arrow-down"></i></button>
+        <button class="ti-btn edit" onclick="startEditArticle('apt')"><i class="fas fa-pen"></i></button>
+        <button class="ti-btn del" onclick="deleteArticle('apt')"><i class="fas fa-trash"></i></button>
+      </div>
+    </div></div></div>
+  <div class="editor-actions" id="editor-actions">
+        <button class="btn-secondary" onclick="exportFullHTML()" style="background:#1A8A4A; color:white; border:none;">
+          <i class="fas fa-file-export"></i> Скачать готовый HTML
+        </button>
+        <button class="btn-primary" onclick="switchTab('new-article', document.querySelectorAll('.editor-tab')[2])">
+          <i class="fas fa-plus"></i> Новая статья
+        </button></div>
+</div>
+
+<div class="toast" id="toast">
+  <i class="fas fa-check-circle"></i>
+  <span id="toast-msg">Сохранено</span>
+</div>
+
+<script>
+  // ══════════════════════════════════════════════
+  //  DATA STORE (Default)
+  // ══════════════════════════════════════════════
+  let db = {
+  "categories": [
+    {
+      "id": "network",
+      "label": "Сеть",
+      "icon": "fa-network-wired"
+    },
+    {
+      "id": "software",
+      "label": "Программы",
+      "icon": "fa-box-open"
+    },
+    {
+      "id": "system",
+      "label": "Система",
+      "icon": "fa-cog"
+    },
+    {
+      "id": "security",
+      "label": "Безопасность",
+      "icon": "fa-shield-alt"
+    },
+    {
+      "id": "server",
+      "label": "Серверы",
+      "icon": "fa-server"
+    },
+    {
+      "id": "desktop",
+      "label": "Рабочий стол",
+      "icon": "fa-desktop"
+    },
+    {
+      "id": "exam",
+      "label": "Сетевой практикум",
+      "icon": "fa-graduation-cap"
+    }
+  ],
+  "articles": [
+    {
+      "id": "samba",
+      "cat": "network",
+      "title": "Samba: настройка файлового сервера",
+      "desc": "Полное руководство по установке и настройке Samba для организации общего доступа к файлам в сети между Linux и Windows.",
+      "updated": "10 декабря 2026",
+      "author": "ALT Community",
+      "body": "<h2 id=\"intro\">Введение</h2><p>Samba — это свободная реализация протокола SMB/CIFS...</p>"
+    },
+    {
+      "id": "apt",
+      "cat": "software",
+      "title": "APT: управление пакетами",
+      "desc": "Работа с менеджером пакетов apt-get в ALT Linux...",
+      "updated": "5 декабря 2026",
+      "author": "ALT Community",
+      "body": "<h2 id=\"intro\">Введение</h2><p>APT (Advanced Package Tool)...</p>"
+    }
+  ]
+}; // ALTWIKI_DB_END
+
+  // ══════════════════════════════════════════════
+  //  STATE & PERSISTENCE
+  // ══════════════════════════════════════════════
+  let currentArticleId = null;
+  let editMode = false;
+  let currentTab = 'topics';
+  let editingArticleId = null;
+
+  function saveToDisk() {
+    localStorage.setItem('altwiki_db_2026', JSON.stringify(db));
+  }
+
+  function loadFromDisk() {
+    const saved = localStorage.getItem('altwiki_db_2026');
+    if (saved) {
+      db = JSON.parse(saved);
+    }
+  }
+
+  // ══════════════════════════════════════════════
+  //  EXPORT FUNCTIONALITY
+  // ══════════════════════════════════════════════
+function exportFullHTML() {
+    // Временно выходим из режима редактирования для экспорта
+    const wasEditMode = editMode;
+    if (editMode) {
+        // Сохраняем изменения перед выходом
+        if (currentArticleId) {
+            const titleEl = document.querySelector('.article-title');
+            const descEl = document.querySelector('.article-desc');
+            const bodyEl = document.getElementById('article-body');
+            if (titleEl && descEl && bodyEl) {
+                const article = db.articles.find(a => a.id === currentArticleId);
+                if (article) {
+                    article.title = titleEl.textContent;
+                    article.desc = descEl.textContent;
+                    article.body = bodyEl.innerHTML;
+                }
+            }
+        }
+        
+        // Убираем признаки редактирования
+        editMode = false;
+        document.body.classList.remove('edit-active');
+        document.getElementById('editorPanel')?.classList.remove('open');
+        document.getElementById('editorOverlay')?.classList.remove('visible');
+        document.getElementById('editModeBtn')?.classList.remove('active-edit');
+        const lbl = document.getElementById('editModeLabel');
+        if (lbl) lbl.textContent = 'Режим редактора';
+        stripInlineEditability();
+    }
+
+    // Экспортируем
+    let html = document.documentElement.outerHTML;
+    const dbString = "let db = " + JSON.stringify(db, null, 2) + "; // ALTWIKI_DB_END";
+    const updatedHtml = html.replace(/let db = \{[\s\S]*?\}; \/\/ ALTWIKI_DB_END/, dbString);
+
+    const blob = new Blob([updatedHtml], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'altwiki_updated.html';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('Файл экспортирован');
+
+    // Возвращаем режим редактирования обратно
+    if (wasEditMode) {
+        editMode = true;
+        document.body.classList.add('edit-active');
+        document.getElementById('editModeBtn')?.classList.add('active-edit');
+        const lbl = document.getElementById('editModeLabel');
+        if (lbl) lbl.textContent = 'Выйти из редактора';
+        openEditorPanel();
+        applyInlineEditability();
+    }
+}
+
+  // ══════════════════════════════════════════════
+  //  SEARCH ENGINE
+  // ══════════════════════════════════════════════
+  function handleSearch(query) {
+    if (!query.trim()) {
+      showSection('home');
+      return;
+    }
+
+    const q = query.toLowerCase();
+    const results = db.articles.filter(a =>
+            a.title.toLowerCase().includes(q) ||
+            a.desc.toLowerCase().includes(q)
+    );
+
+    renderSearchResults(results, query);
+  }
+
+  function renderSearchResults(results, query) {
+    const area = document.getElementById('content-area');
+    clearActiveNav();
+    currentArticleId = null;
+    renderSidebar();
+
+    const resultsHtml = results.map(a => {
+      const cat = db.categories.find(c => c.id === a.cat);
+      return `
+        <div class="card" onclick="openArticle('${a.id}')" style="margin-bottom:12px; width:100%; max-width:none;">
+          <div style="display:flex; gap:15px; align-items:center;">
+             <div class="card-icon" style="margin-bottom:0"><i class="fas ${cat ? cat.icon : 'fa-file'}"></i></div>
+             <div style="flex:1">
+                <h3 style="margin-bottom:2px">${a.title}</h3>
+                <p>${a.desc}</p>
+             </div>
+             <i class="fas fa-chevron-right" style="opacity:0.3"></i>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    area.innerHTML = `
+      <div class="breadcrumb">
+        <span onclick="showSection('home')">Главная</span>
+        <span class="sep">/</span>
+        <span class="current">Поиск: ${query}</span>
+      </div>
+      <h2 style="margin-bottom:20px; font-size:20px;">Найдено: ${results.length}</h2>
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        ${results.length ? resultsHtml : '<p style="color:var(--text-muted)">Ничего не найдено...</p>'}
+      </div>
+    `;
+  }
+
+  // ══════════════════════════════════════════════
+  //  SIDEBAR RENDER
+  // ══════════════════════════════════════════════
+  function renderSidebar() {
+    const tree = document.getElementById('nav-tree');
+    tree.innerHTML = '';
+
+    db.categories.forEach(cat => {
+      const articles = db.articles.filter(a => a.cat === cat.id);
+      if (!articles.length) return;
+
+      const div = document.createElement('div');
+      div.className = 'nav-item';
+      div.innerHTML = `
+      <div class="nav-item-header" onclick="toggleNav(this)" data-cat="${cat.id}">
+        <i class="fas ${cat.icon} nav-icon"></i>
+        <span class="nav-label">${cat.label}</span>
+        <i class="fas fa-chevron-right nav-arrow"></i>
+      </div>
+      <div class="nav-subitems">
+        ${articles.map(a => `
+          <div class="nav-subitem ${currentArticleId === a.id ? 'active-sub' : ''}"
+               onclick="openArticle('${a.id}', this)">
+            ${a.title}
+          </div>`).join('')}
+      </div>
+    `;
+      tree.appendChild(div);
+
+      if (articles.some(a => a.id === currentArticleId)) {
+        div.querySelector('.nav-item-header').classList.add('open');
+        div.querySelector('.nav-subitems').classList.add('open');
+      }
+    });
+  }
+
+  function toggleNav(el) {
+    el.classList.toggle('open');
+    el.nextElementSibling.classList.toggle('open');
+  }
+
+  // ══════════════════════════════════════════════
+  //  CONTENT RENDER
+  // ══════════════════════════════════════════════
+  function showSection(name) {
+    currentArticleId = null;
+    renderSidebar();
+    clearActiveNav();
+    document.querySelector('.nav-item-header').classList.add('active');
+
+    const area = document.getElementById('content-area');
+    if (name === 'home') {
+      const catCards = db.categories.map(cat => {
+        const count = db.articles.filter(a => a.cat === cat.id).length;
+        return `<div class="card" onclick="openFirstInCat('${cat.id}')">
+        <div class="card-icon"><i class="fas ${cat.icon}"></i></div>
+        <h3>${cat.label}</h3>
+        <p>Статьи и руководства по теме</p>
+        <div class="card-count">${count} ${pluralize(count, 'статья','статьи','статей')}</div>
+      </div>`;
+      }).join('');
+
+      area.innerHTML = `
+      <div class="welcome-hero">
+        <h1>Документация по ALT Linux 2026</h1>
+        <p>Полное собрание руководств, инструкций и справочных материалов.</p>
+        <div class="hero-stats">
+          <div class="hero-stat"><div class="num">${db.articles.length}</div><div class="lbl">Статей</div></div>
+          <div class="hero-stat"><div class="num">${db.categories.length}</div><div class="lbl">Разделов</div></div>
+          <div class="hero-stat"><div class="num">ALT 10</div><div class="lbl">Платформа</div></div>
+        </div>
+      </div>
+      <h2 style="font-size:16px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px">Разделы</h2>
+      <div class="cards-grid">${catCards}</div>
+    `;
+    }
+  }
+
+  function openArticle(id) {
+    const article = db.articles.find(a => a.id === id);
+    if (!article) return;
+    currentArticleId = id;
+    renderSidebar();
+
+    const area = document.getElementById('content-area');
+
+    area.innerHTML = `
+    <div class="breadcrumb">
+      <span onclick="showSection('home')">Главная</span>
+      <span class="sep">/</span>
+      <span class="current">${article.title}</span>
+    </div>
+    <div class="article-header">
+      <h1 class="article-title">${article.title}</h1>
+      <p class="article-desc">${article.desc}</p>
+    </div>
+    <div class="article-body" id="article-body">${article.body}</div>
+  `;
+
+    if (editMode) applyInlineEditability();
+  }
+
+  function applyInlineEditability() {
+    if (!editMode) return;
+    const title = document.querySelector('.article-title');
+    const desc = document.querySelector('.article-desc');
+    const body = document.getElementById('article-body');
+    if (title) title.setAttribute('contenteditable', 'true');
+    if (desc) desc.setAttribute('contenteditable', 'true');
+    if (body) body.setAttribute('contenteditable', 'true');
+  }
+
+  function stripInlineEditability() {
+    document.querySelector('.article-title')?.removeAttribute('contenteditable');
+    document.querySelector('.article-desc')?.removeAttribute('contenteditable');
+    document.getElementById('article-body')?.removeAttribute('contenteditable');
+  }
+
+  function openFirstInCat(catId) {
+    const art = db.articles.find(a => a.cat === catId);
+    if (art) openArticle(art.id);
+  }
+
+  function clearActiveNav() {
+    document.querySelectorAll('.nav-item-header').forEach(el => el.classList.remove('active'));
+  }
+
+  // ══════════════════════════════════════════════
+  //  EDITOR & SORTING
+  // ══════════════════════════════════════════════
+function enterEditMode() {
+  if (editMode) return; // Если уже в режиме редактирования — ничего не делаем
+
+  // Запрашиваем авторизацию
+  const login = prompt("Введите логин:");
+  if (login !== "basov") {
+    alert("Неверный логин!");
+    return;
+  }
+
+  const password = prompt("Введите пароль:");
+  if (password !== "opasnost") {
+    alert("Неверный пароль!");
+    return;
+  }
+
+  // Если логин и пароль верны — входим в режим редактирования
+  editMode = true;
+  const btn = document.getElementById('editModeBtn');
+  const lbl = document.getElementById('editModeLabel');
+  btn.classList.add('active-edit');
+  lbl.textContent = 'Выйти из редактора';
+  document.body.classList.add('edit-active');
+  openEditorPanel();
+  switchTab('topics', document.querySelector('.editor-tab'));
+  applyInlineEditability();
+}
+
+  function exitEditMode() {
+    if (!editMode) return;
+    editMode = false;
+    stripInlineEditability();
+    const btn = document.getElementById('editModeBtn');
+    const lbl = document.getElementById('editModeLabel');
+    btn.classList.remove('active-edit');
+    lbl.textContent = 'Режим редактора';
+    document.body.classList.remove('edit-active');
+    hideEditorPanel();
+  }
+
+  function toggleEditMode() {
+    if (editMode) exitEditMode();
+    else enterEditMode();
+  }
+
+  function openEditorPanel() {
+    if (!editMode) return;
+    document.getElementById('editorOverlay').classList.add('visible');
+    document.getElementById('editorPanel').classList.add('open');
+  }
+
+  function hideEditorPanel() {
+    document.getElementById('editorPanel').classList.remove('open');
+    document.getElementById('editorOverlay').classList.remove('visible');
+  }
+
+  function handleOverlayClick(e) {
+    if (e.target === document.getElementById('editorOverlay')) hideEditorPanel();
+  }
+
+  function switchTab(tab, btnEl) {
+    currentTab = tab;
+    document.querySelectorAll('.editor-tab').forEach(b => b.classList.remove('active'));
+    if (btnEl) btnEl.classList.add('active');
+
+    const body = document.getElementById('editor-body');
+    const actions = document.getElementById('editor-actions');
+
+    if (tab === 'topics') {
+      renderTopicsList(body);
+      actions.innerHTML = `
+        <button class="btn-secondary" onclick="exportFullHTML()" style="background:#1A8A4A; color:white; border:none;">
+          <i class="fas fa-file-export"></i> Скачать готовый HTML
+        </button>
+        <button class="btn-primary" onclick="switchTab('new-article', document.querySelectorAll('.editor-tab')[2])">
+          <i class="fas fa-plus"></i> Новая статья
+        </button>`;
+    } else if (tab === 'structure') {
+      renderStructureTab(body);
+      actions.innerHTML = ``;
+    } else if (tab === 'edit-article' || tab === 'new-article') {
+      renderEditForm(body, editingArticleId);
+      actions.innerHTML = `<button class="btn-primary" onclick="saveArticleEdit()">Сохранить</button>`;
+    }
+  }
+
+  function renderTopicsList(container) {
+    const items = db.articles.map((a, index) => {
+      return `<div class="topic-item">
+      <div class="ti-label">${a.title}</div>
+      <div class="topic-item-actions">
+        <button class="ti-btn sort" onclick="moveItem('articles', ${index}, -1)"><i class="fas fa-arrow-up"></i></button>
+        <button class="ti-btn sort" onclick="moveItem('articles', ${index}, 1)"><i class="fas fa-arrow-down"></i></button>
+        <button class="ti-btn edit" onclick="startEditArticle('${a.id}')"><i class="fas fa-pen"></i></button>
+        <button class="ti-btn del" onclick="deleteArticle('${a.id}')"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>`;
+    }).join('');
+    container.innerHTML = `<div class="topic-list">${items}</div>`;
+  }
+
+  function renderStructureTab(container) {
+    const catHtml = db.categories.map((cat, index) => {
+      return `<div class="topic-item">
+      <div class="ti-label">${cat.label}</div>
+      <div class="topic-item-actions">
+        <button class="ti-btn sort" onclick="moveItem('categories', ${index}, -1)"><i class="fas fa-arrow-up"></i></button>
+        <button class="ti-btn sort" onclick="moveItem('categories', ${index}, 1)"><i class="fas fa-arrow-down"></i></button>
+        <button class="ti-btn del" onclick="deleteCategory('${cat.id}')"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>`;
+    }).join('');
+
+    container.innerHTML = `
+    <div class="topic-list">${catHtml}</div>
+    <div style="margin-top:20px">
+      <input class="form-input" id="new-cat-name" placeholder="Название раздела">
+      <button class="btn-primary" onclick="addCategory()" style="margin-top:10px">Добавить раздел</button>
+    </div>
+  `;
+  }
+
+  function moveItem(type, index, direction) {
+    const targetArray = db[type];
+    const newIndex = index + direction;
+    if (newIndex < 0 || newIndex >= targetArray.length) return;
+
+    const temp = targetArray[index];
+    targetArray[index] = targetArray[newIndex];
+    targetArray[newIndex] = temp;
+
+    saveToDisk();
+    renderSidebar();
+    if (type === 'articles') renderTopicsList(document.getElementById('editor-body'));
+    else renderStructureTab(document.getElementById('editor-body'));
+    showToast('Порядок изменен');
+  }
+
+  // ══════════════════════════════════════════════
+  //  CRUD & UTILS
+  // ══════════════════════════════════════════════
+  function openNewTopic() {
+    editingArticleId = null;
+    if (!editMode) {
+      editMode = true;
+      const btn = document.getElementById('editModeBtn');
+      const lbl = document.getElementById('editModeLabel');
+      btn.classList.add('active-edit');
+      lbl.textContent = 'Выйти из редактора';
+      document.body.classList.add('edit-active');
+    }
+    openEditorPanel();
+    switchTab('new-article', document.querySelectorAll('.editor-tab')[2]);
+    applyInlineEditability();
+  }
+
+  function startEditArticle(id) {
+    editingArticleId = id;
+    openEditorPanel();
+    switchTab('edit-article', document.querySelectorAll('.editor-tab')[1]);
+  }
+
+  function saveArticleEdit() {
+    const title = document.getElementById('edit-title').value;
+    const cat = document.getElementById('edit-cat').value;
+    const desc = document.getElementById('edit-desc').value;
+    const body = getEditBodyHtml();
+
+    if (editingArticleId) {
+      const art = db.articles.find(a => a.id === editingArticleId);
+      art.title = title; art.cat = cat; art.desc = desc; art.body = body;
+    } else {
+      db.articles.push({ id: 'art-'+Date.now(), title, cat, desc, body, updated: formatDate(), author: 'Admin' });
+    }
+
+    saveToDisk();
+    renderSidebar();
+    switchTab('topics', document.querySelectorAll('.editor-tab')[0]);
+    showToast('Сохранено');
+  }
+
+  function getEditBodyHtml() {
+    const hWrap = document.getElementById('edit-body-html-wrap');
+    const ta = document.getElementById('edit-body');
+    const vis = document.getElementById('edit-body-visual');
+    if (hWrap && hWrap.classList.contains('visible') && ta) return ta.value;
+    if (vis) return vis.innerHTML;
+    return ta ? ta.value : '';
+  }
+
+  function setBodyEditMode(mode) {
+    const vTab = document.getElementById('tab-visual');
+    const hTab = document.getElementById('tab-html');
+    const vWrap = document.getElementById('edit-body-visual-wrap');
+    const hWrap = document.getElementById('edit-body-html-wrap');
+    const ta = document.getElementById('edit-body');
+    const vis = document.getElementById('edit-body-visual');
+    if (!ta || !vis || !vTab || !hTab || !vWrap || !hWrap) return;
+    if (mode === 'html') {
+      ta.value = vis.innerHTML;
+      vTab.classList.remove('active');
+      hTab.classList.add('active');
+      vWrap.classList.add('hidden');
+      hWrap.classList.add('visible');
+    } else {
+      vis.innerHTML = ta.value;
+      hTab.classList.remove('active');
+      vTab.classList.add('active');
+      hWrap.classList.remove('visible');
+      vWrap.classList.remove('hidden');
+      richRefreshToolbar();
+    }
+  }
+
+  function richGetEditor() {
+    return document.getElementById('edit-body-visual');
+  }
+
+  function richSelectionInside() {
+    const el = richGetEditor();
+    if (!el) return false;
+    if (document.activeElement === el) return true;
+    const sel = window.getSelection();
+    if (!sel || !sel.rangeCount) return false;
+    return el.contains(sel.anchorNode) && el.contains(sel.focusNode);
+  }
+
+  function richGetFormatBlockTag() {
+    try {
+      let t = document.queryCommandValue('formatBlock') || '';
+      return String(t).toLowerCase().replace(/[<>]/g, '');
+    } catch (e) { return ''; }
+  }
+
+  function richIsInLink(rootEl) {
+    const sel = window.getSelection();
+    if (!sel || !sel.rangeCount || !rootEl) return false;
+    let n = sel.anchorNode;
+    if (n.nodeType === 3) n = n.parentElement;
+    while (n && n !== rootEl) {
+      if (n.nodeName === 'A') return true;
+      n = n.parentElement;
+    }
+    return false;
+  }
+
+  function richRefreshToolbar() {
+    const el = richGetEditor();
+    const wrap = document.getElementById('edit-body-visual-wrap');
+    if (!el || !wrap || wrap.classList.contains('hidden')) return;
+    const bar = document.getElementById('rich-toolbar-main');
+    if (!bar) return;
+    if (!richSelectionInside()) {
+      bar.querySelectorAll('.rich-cmd-btn').forEach(b => b.classList.remove('is-active'));
+      return;
+    }
+    const setBtn = (id, on) => {
+      const b = document.getElementById(id);
+      if (b) b.classList.toggle('is-active', !!on);
+    };
+    try {
+      setBtn('rt-bold', document.queryCommandState('bold'));
+      setBtn('rt-italic', document.queryCommandState('italic'));
+      setBtn('rt-underline', document.queryCommandState('underline'));
+      setBtn('rt-strike', document.queryCommandState('strikeThrough'));
+      setBtn('rt-sub', document.queryCommandState('subscript'));
+      setBtn('rt-sup', document.queryCommandState('superscript'));
+      setBtn('rt-ul', document.queryCommandState('insertUnorderedList'));
+      setBtn('rt-ol', document.queryCommandState('insertOrderedList'));
+      const fb = richGetFormatBlockTag();
+      setBtn('rt-h2', fb === 'h2');
+      setBtn('rt-h3', fb === 'h3');
+      setBtn('rt-pre', fb === 'pre');
+      setBtn('rt-quote', fb === 'blockquote');
+      setBtn('rt-p', fb === 'p' || fb === 'div' || fb === '');
+      setBtn('rt-link', richIsInLink(el));
+      setBtn('rt-justifyLeft', document.queryCommandState('justifyLeft'));
+      setBtn('rt-justifyCenter', document.queryCommandState('justifyCenter'));
+      setBtn('rt-justifyRight', document.queryCommandState('justifyRight'));
+      setBtn('rt-justifyFull', document.queryCommandState('justifyFull'));
+    } catch (e) {}
+  }
+
+  function richEnsureHooks() {
+    if (window.__richEditorHooks) return;
+    window.__richEditorHooks = true;
+    document.addEventListener('selectionchange', function () {
+      clearTimeout(window.__richDeb);
+      window.__richDeb = setTimeout(richRefreshToolbar, 40);
+    });
+    document.addEventListener('mouseup', function (e) {
+      if (e.target && e.target.closest && e.target.closest('#edit-body-visual')) richRefreshToolbar();
+    });
+    document.addEventListener('keyup', function (e) {
+      if (e.target && e.target.id === 'edit-body-visual') richRefreshToolbar();
+    });
+  }
+
+  function richExec(cmd, value) {
+    const el = richGetEditor();
+    if (!el) return;
+    el.focus();
+    try { document.execCommand(cmd, false, value == null ? null : value); } catch (e) {}
+    richRefreshToolbar();
+  }
+
+  function richToggleH2() {
+    const el = richGetEditor();
+    if (!el) return;
+    el.focus();
+    if (richGetFormatBlockTag() === 'h2') document.execCommand('formatBlock', false, 'p');
+    else document.execCommand('formatBlock', false, 'h2');
+    richRefreshToolbar();
+  }
+
+  function richToggleH3() {
+    const el = richGetEditor();
+    if (!el) return;
+    el.focus();
+    if (richGetFormatBlockTag() === 'h3') document.execCommand('formatBlock', false, 'p');
+    else document.execCommand('formatBlock', false, 'h3');
+    richRefreshToolbar();
+  }
+
+  function richTogglePre() {
+    const el = richGetEditor();
+    if (!el) return;
+    el.focus();
+    if (richGetFormatBlockTag() === 'pre') document.execCommand('formatBlock', false, 'p');
+    else document.execCommand('formatBlock', false, 'pre');
+    richRefreshToolbar();
+  }
+
+  function richToggleQuote() {
+    const el = richGetEditor();
+    if (!el) return;
+    el.focus();
+    if (richGetFormatBlockTag() === 'blockquote') document.execCommand('formatBlock', false, 'p');
+    else document.execCommand('formatBlock', false, 'blockquote');
+    richRefreshToolbar();
+  }
+
+  function richToParagraph() {
+    const el = richGetEditor();
+    if (!el) return;
+    el.focus();
+    document.execCommand('formatBlock', false, 'p');
+    richRefreshToolbar();
+  }
+
+  function richInlineCode() {
+    const el = richGetEditor();
+    if (!el) return;
+    el.focus();
+    const sel = window.getSelection();
+    if (!sel.rangeCount) return;
+    const t = sel.toString() || 'код';
+    const esc = t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    document.execCommand('insertHTML', false, '<code>' + esc + '</code>');
+    richRefreshToolbar();
+  }
+
+  function richHr() {
+    const el = richGetEditor();
+    if (!el) return;
+    el.focus();
+    document.execCommand('insertHorizontalRule');
+    richRefreshToolbar();
+  }
+
+  function richClearFormat() {
+    const el = richGetEditor();
+    if (!el) return;
+    el.focus();
+    try {
+      document.execCommand('removeFormat');
+      document.execCommand('unlink');
+    } catch (e) {}
+    richRefreshToolbar();
+  }
+
+  function richPromptLink() {
+    const u = prompt('Адрес ссылки (URL):', 'https://');
+    if (u) richExec('createLink', u);
+    else richRefreshToolbar();
+  }
+
+  function richPickImageFile() {
+    const inp = document.getElementById('rich-img-file');
+    if (inp) inp.click();
+  }
+
+  function richInsertImageFile(ev) {
+    const f = ev.target.files && ev.target.files[0];
+    ev.target.value = '';
+    if (!f || !f.type.startsWith('image/')) return;
+    const r = new FileReader();
+    r.onload = () => {
+      const el = richGetEditor();
+      if (!el) return;
+      el.focus();
+      document.execCommand('insertHTML', false, '<p><img src="' + String(r.result).replace(/"/g, '') + '" alt=""></p>');
+      richRefreshToolbar();
+    };
+    r.readAsDataURL(f);
+  }
+
+  function escapeHtmlAttr(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  function richInsertImageUrl() {
+    const u = prompt('Адрес изображения (URL):', 'https://');
+    if (!u) { richRefreshToolbar(); return; }
+    const el = richGetEditor();
+    if (!el) return;
+    el.focus();
+    document.execCommand('insertHTML', false, '<p><img src="' + escapeHtmlAttr(u) + '" alt=""></p>');
+    richRefreshToolbar();
+  }
+
+  function renderEditForm(container, id) {
+    const art = id ? db.articles.find(a => a.id === id) : { title: '', desc: '', body: '', cat: db.categories[0].id };
+    const cats = db.categories.map(c => `<option value="${c.id}" ${art.cat === c.id ? 'selected' : ''}>${c.label}</option>`).join('');
+
+    container.innerHTML = `
+    <input class="form-input" id="edit-title" placeholder="Заголовок">
+    <select class="form-select" id="edit-cat" style="margin-top:10px">${cats}</select>
+    <input class="form-input" id="edit-desc" placeholder="Описание" style="margin-top:10px">
+    <div class="form-label" style="margin-top:14px">Текст статьи</div>
+    <div class="body-edit-mode-tabs">
+      <button type="button" class="body-edit-mode-tab active" id="tab-visual" onclick="setBodyEditMode('visual')">Визуально</button>
+      <button type="button" class="body-edit-mode-tab" id="tab-html" onclick="setBodyEditMode('html')">HTML</button>
+    </div>
+    <div id="edit-body-visual-wrap">
+      <div class="rich-toolbar" id="rich-toolbar-main">
+        <button type="button" class="rich-cmd-btn" id="rt-bold" onclick="richExec('bold')" title="Жирный"><i class="fas fa-bold"></i></button>
+        <button type="button" class="rich-cmd-btn" id="rt-italic" onclick="richExec('italic')" title="Курсив"><i class="fas fa-italic"></i></button>
+        <button type="button" class="rich-cmd-btn" id="rt-underline" onclick="richExec('underline')" title="Подчёркнутый"><i class="fas fa-underline"></i></button>
+        <button type="button" class="rich-cmd-btn" id="rt-strike" onclick="richExec('strikeThrough')" title="Зачёркнутый"><i class="fas fa-strikethrough"></i></button>
+        <button type="button" class="rich-cmd-btn" id="rt-sub" onclick="richExec('subscript')" title="Подстрочный"><i class="fas fa-subscript"></i></button>
+        <button type="button" class="rich-cmd-btn" id="rt-sup" onclick="richExec('superscript')" title="Надстрочный"><i class="fas fa-superscript"></i></button>
+        <span class="rich-sep"></span>
+        <button type="button" class="rich-cmd-btn" id="rt-h2" onclick="richToggleH2()" title="Заголовок H2"><i class="fas fa-heading"></i><span style="font-size:9px;margin-left:2px;opacity:.85">2</span></button>
+        <button type="button" class="rich-cmd-btn" id="rt-h3" onclick="richToggleH3()" title="Заголовок H3"><i class="fas fa-heading"></i><span style="font-size:9px;margin-left:2px;opacity:.85">3</span></button>
+        <button type="button" class="rich-cmd-btn" id="rt-p" onclick="richToParagraph()" title="Обычный абзац"><i class="fas fa-paragraph"></i></button>
+        <button type="button" class="rich-cmd-btn" id="rt-quote" onclick="richToggleQuote()" title="Цитата"><i class="fas fa-quote-right"></i></button>
+        <button type="button" class="rich-cmd-btn" id="rt-pre" onclick="richTogglePre()" title="Блок кода (pre)"><i class="fas fa-code"></i></button>
+        <button type="button" class="rich-cmd-btn" id="rt-inlinecode" onclick="richInlineCode()" title="Встроенный код (выделите текст)"><i class="fas fa-terminal"></i></button>
+        <span class="rich-sep"></span>
+        <button type="button" class="rich-cmd-btn" id="rt-ul" onclick="richExec('insertUnorderedList')" title="Маркированный список"><i class="fas fa-list-ul"></i></button>
+        <button type="button" class="rich-cmd-btn" id="rt-ol" onclick="richExec('insertOrderedList')" title="Нумерованный список"><i class="fas fa-list-ol"></i></button>
+        <button type="button" class="rich-cmd-btn" id="rt-indent" onclick="richExec('indent')" title="Увеличить отступ"><i class="fas fa-indent"></i></button>
+        <button type="button" class="rich-cmd-btn" id="rt-outdent" onclick="richExec('outdent')" title="Уменьшить отступ"><i class="fas fa-outdent"></i></button>
+        <span class="rich-sep"></span>
+        <button type="button" class="rich-cmd-btn" id="rt-justifyLeft" onclick="richExec('justifyLeft')" title="По левому краю"><i class="fas fa-align-left"></i></button>
+        <button type="button" class="rich-cmd-btn" id="rt-justifyCenter" onclick="richExec('justifyCenter')" title="По центру"><i class="fas fa-align-center"></i></button>
+        <button type="button" class="rich-cmd-btn" id="rt-justifyRight" onclick="richExec('justifyRight')" title="По правому краю"><i class="fas fa-align-right"></i></button>
+        <button type="button" class="rich-cmd-btn" id="rt-justifyFull" onclick="richExec('justifyFull')" title="По ширине"><i class="fas fa-align-justify"></i></button>
+        <span class="rich-sep"></span>
+        <button type="button" class="rich-cmd-btn" id="rt-link" onclick="richPromptLink()" title="Вставить ссылку"><i class="fas fa-link"></i></button>
+        <button type="button" class="rich-cmd-btn" id="rt-unlink" onclick="richExec('unlink'); richRefreshToolbar()" title="Убрать ссылку"><i class="fas fa-unlink"></i></button>
+        <button type="button" class="rich-cmd-btn" id="rt-hr" onclick="richHr()" title="Горизонтальная линия"><i class="fas fa-minus"></i></button>
+        <button type="button" class="rich-cmd-btn" id="rt-imgurl" onclick="richInsertImageUrl()" title="Картинка по URL"><i class="fas fa-image"></i></button>
+        <button type="button" class="rich-cmd-btn" id="rt-imgfile" onclick="richPickImageFile()" title="Картинка с компьютера"><i class="fas fa-upload"></i></button>
+        <span class="rich-sep"></span>
+        <button type="button" class="rich-cmd-btn" id="rt-undo" onclick="richExec('undo')" title="Отменить"><i class="fas fa-undo"></i></button>
+        <button type="button" class="rich-cmd-btn" id="rt-redo" onclick="richExec('redo')" title="Повторить"><i class="fas fa-redo"></i></button>
+        <button type="button" class="rich-cmd-btn" id="rt-clear" onclick="richClearFormat()" title="Снять форматирование"><i class="fas fa-eraser"></i></button>
+      </div>
+      <input type="file" id="rich-img-file" accept="image/*" style="display:none" onchange="richInsertImageFile(event)">
+      <div id="edit-body-visual" class="rich-editor" contenteditable="true" data-placeholder="Пишите текст здесь, как в блокноте…"></div>
+    </div>
+    <div id="edit-body-html-wrap">
+      <textarea class="form-textarea" id="edit-body" style="margin-top:0; min-height:280px; font-family:var(--mono)"></textarea>
+    </div>
+  `;
+
+    document.getElementById('edit-title').value = art.title || '';
+    document.getElementById('edit-desc').value = art.desc || '';
+    const body = art.body || '';
+    document.getElementById('edit-body').value = body;
+    document.getElementById('edit-body-visual').innerHTML = body;
+    richEnsureHooks();
+    richRefreshToolbar();
+  }
+
+  function saveInlineEdits() {
+    const art = db.articles.find(a => a.id === currentArticleId);
+    if (!art) return;
+    art.title = document.querySelector('.article-title').textContent;
+    art.desc = document.querySelector('.article-desc').textContent;
+    art.body = document.getElementById('article-body').innerHTML;
+    saveToDisk();
+    renderSidebar();
+    showToast('Изменения сохранены');
+  }
+
+  function addCategory() {
+    const name = document.getElementById('new-cat-name').value;
+    if (!name) return;
+    db.categories.push({ id: name.toLowerCase(), label: name, icon: 'fa-folder' });
+    saveToDisk();
+    renderSidebar();
+    renderStructureTab(document.getElementById('editor-body'));
+  }
+
+  function deleteArticle(id) {
+    db.articles = db.articles.filter(a => a.id !== id);
+    saveToDisk();
+    renderTopicsList(document.getElementById('editor-body'));
+  }
+
+  function deleteCategory(id) {
+    db.categories = db.categories.filter(c => c.id !== id);
+    saveToDisk();
+    renderSidebar();
+    renderStructureTab(document.getElementById('editor-body'));
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    document.getElementById('toast-msg').textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2000);
+  }
+
+  function formatDate() { return new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }); }
+  function pluralize(n, one, few, many) {
+    if (n % 10 === 1 && n % 100 !== 11) return one;
+    if ([2,3,4].includes(n % 10) && ![12,13,14].includes(n % 100)) return few;
+    return many;
+  }
+
+  // ══════════════════════════════════════════════
+  //  INIT
+  // ══════════════════════════════════════════════
+  loadFromDisk();
+  renderSidebar();
+  showSection('home');
+</script>
+
+
+</body></html>
